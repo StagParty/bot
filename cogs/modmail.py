@@ -26,7 +26,7 @@ class ModMail(commands.Cog):
             files = await asyncio.gather(*to_file_tasks)
 
             try:
-                await original_msg.reply(msg.content, files=files)
+                await original_msg.reply(f"{msg.author.mention}: {msg.content}", files=files)
             except discord.HTTPException or discord.Forbidden as e:
                 await msg.reply(f"Unable to send message to user: {e}")
 
