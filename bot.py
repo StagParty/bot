@@ -1,7 +1,7 @@
-import discord
-from discord.ext import commands
 import os
 import datetime
+import discord
+from discord.ext import commands
 from dotenv import load_dotenv
 
 GUILD = [970282258890096651]
@@ -93,4 +93,6 @@ async def on_ready():
     print("Online")
 
 
-bot.run(token)
+if __name__ == "__main__":
+    bot.load_extension("cogs.modmail")
+    bot.run(token)
