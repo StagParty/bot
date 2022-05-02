@@ -68,7 +68,7 @@ async def update(ctx, *, message):
             timestamp=datetime.datetime.utcnow(),
             color=discord.Color.blue(),
         )
-        e.set_footer(text=f"{ctx.author}", icon_url=f"{ctx.author.avatar}")
+        e.set_footer(text=str(ctx.author), icon_url=ctx.author.avatar)
         update_channel = bot.get_channel(970282514902052874)
         await update_channel.send(embed=e)
     else:
