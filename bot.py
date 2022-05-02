@@ -58,36 +58,6 @@ async def on_message(msg):
     await bot.process_commands(msg)
 
 
-@bot.command()
-async def update(ctx, *, message):
-    if ctx.author.id in OWNERS:
-        await ctx.message.delete()
-        e = discord.Embed(
-            title="Update",
-            description=f"{message}",
-            timestamp=datetime.datetime.utcnow(),
-            color=discord.Color.blue(),
-        )
-        e.set_footer(text=str(ctx.author), icon_url=ctx.author.avatar)
-        update_channel = bot.get_channel(970282514902052874)
-        await update_channel.send(embed=e)
-    else:
-        await ctx.send("You're not allowed to send an update!")
-
-
-@bot.command()
-async def release(ctx):
-    await ctx.message.delete()
-    e = discord.Embed(
-        title="Hello there,",
-        description="We are working hard to get EventsApp released into beta.\n\nWhen it is ready it will be announced in <#970282258890096654>.\n\nKind Regards,\nThe EventsApp Team",
-        color=discord.Color.dark_purple(),
-        timestamp=datetime.datetime.utcnow(),
-    )
-    e.set_footer(text=str(ctx.author), icon_url=ctx.author.avatar)
-    await ctx.send(embed=e)
-
-
 @bot.event
 async def on_ready():
     print("Online")
@@ -95,4 +65,5 @@ async def on_ready():
 
 if __name__ == "__main__":
     bot.load_extension("cogs.modmail")
+    bot.load_extension("cogs.utils")
     bot.run(token)
