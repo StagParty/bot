@@ -44,7 +44,7 @@ class ModMail(commands.Cog):
             attachments_str = "\n".join(attachments_str_list)
             mm_embed.add_field(name="All Attachments", value=attachments_str)
 
-        mm_channel = await self.bot.fetch_channel(self.mod_mail_channel)
+        mm_channel: discord.TextChannel = await self.bot.fetch_channel(self.mod_mail_channel)  # type: ignore
 
         try:
             await mm_channel.send(
