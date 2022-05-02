@@ -92,4 +92,6 @@ async def on_ready():
     print("Online")
 
 
-bot.run(token)
+if __name__ == "__main__":
+    bot.load_extension("modmail")
+    bot.run(token)
