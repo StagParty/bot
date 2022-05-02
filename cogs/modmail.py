@@ -1,3 +1,4 @@
+import asyncio
 import discord
 from discord.ext import commands
 
@@ -9,15 +10,27 @@ class ModMail(commands.Cog):
 
     mod_mail_channel = 970561589734416425
 
+    # Key: ID of message sent in mod mail channel
+    # Value: Original message sent in bot's DMs
+    mail_authors: dict[int, discord.Message] = {}
+
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.Cog.listener()
-    async def on_message(self, msg: discord.Message):
-        # Ensure message is in DMs
-        if msg.guild:
+    async def handle_mod_reply(self, msg: discord.Message):
+        if not (ref := msg.reference):
             return
 
+        if original_msg := self.mail_authors.get(ref.message_id):  # type: ignore
+            to_file_tasks = [att.to_file() for att in msg.attachments[:10]]
+            files = await asyncio.gather(*to_file_tasks)
+
+            try:
+                await original_msg.reply(msg.content, files=files)
+            except discord.HTTPException or discord.Forbidden as e:
+                await msg.reply(f"Unable to send message to user: {e}")
+
+    async def handle_dm_reply(self, msg: discord.Message):
         cleaned_content = msg.content.replace("\n", " ")
         timestamp_str = f"Sent on <t:{int(msg.created_at.timestamp())}>"
 
@@ -44,17 +57,30 @@ class ModMail(commands.Cog):
             attachments_str = "\n".join(attachments_str_list)
             mm_embed.add_field(name="All Attachments", value=attachments_str)
 
-        mm_channel: discord.TextChannel = await self.bot.fetch_channel(self.mod_mail_channel)  # type: ignore
+        mm_channel: discord.TextChannel = self.bot.get_channel(self.mod_mail_channel) or await self.bot.fetch_channel(self.mod_mail_channel)  # type: ignore
 
         try:
-            await mm_channel.send(
+            mm_msg = await mm_channel.send(
                 embed=mm_embed, allowed_mentions=discord.AllowedMentions.none()
             )
+            self.mail_authors[mm_msg.id] = msg
+
         except discord.HTTPException as e:
             await msg.author.send(
-                f"Unable to send message: ```{e.text}```",
+                f"Unable to send message: ```{e}```",
                 reference=msg.to_reference(),
             )
+
+    @commands.Cog.listener()
+    async def on_message(self, msg: discord.Message):
+        if msg.author.bot:
+            return
+
+        if msg.guild:
+            if msg.channel.id == self.mod_mail_channel:
+                asyncio.create_task(self.handle_mod_reply(msg))
+        else:
+            asyncio.create_task(self.handle_dm_reply(msg))
 
 
 def setup(bot: commands.Bot):

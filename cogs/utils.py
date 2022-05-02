@@ -3,6 +3,7 @@ from discord.ext import commands
 import datetime
 from bot import OWNERS
 
+
 class Utils(commands.Cog):
     """
     Utility cog for the bot
@@ -27,7 +28,6 @@ class Utils(commands.Cog):
         else:
             await ctx.send("You're not allowed to send an update!")
 
-
     @commands.command()
     async def release(self, ctx):
         await ctx.message.delete()
@@ -39,6 +39,7 @@ class Utils(commands.Cog):
         )
         e.set_footer(text=str(ctx.author), icon_url=ctx.author.avatar)
         await ctx.send(embed=e)
+
 
 def setup(bot):
     bot.add_cog(Utils(bot))
