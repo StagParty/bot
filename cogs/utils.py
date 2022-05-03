@@ -40,5 +40,17 @@ class Utils(commands.Cog):
         e.set_footer(text=str(ctx.author), icon_url=ctx.author.avatar)
         await ctx.send(embed=e)
 
+    @commands.command()
+    async def help(self, ctx):
+        await ctx.message.delete()
+        e = discord.Embed(
+            title="Need Help?",
+            description="Do you need help? Shoot a DM to <@970304297382313984> and we'll reply as fast as we can.\n\nKind Regards,\nThe EventsApp Team",
+            color=discord.Color.dark_purple(),
+            timestamp=datetime.datetime.utcnow(),
+        )
+        e.set_footer(text=str(ctx.author), icon_url=ctx.author.avatar)
+        await ctx.send(embed=e)
+
 def setup(bot):
     bot.add_cog(Utils(bot))

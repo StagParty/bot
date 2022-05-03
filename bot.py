@@ -4,7 +4,6 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-GUILD = [970282258890096651]
 OWNERS = [400857098121904149, 702385226407608341]
 
 load_dotenv()
