@@ -13,11 +13,12 @@ bot = commands.Bot(
     command_prefix="!", help_command=None, intents=discord.Intents.all()
 )
 
-# Suggestions & Feedback
-@bot.event
+
+@bot.event  # Suggestions & Feedback
 async def on_message(msg):
-    if msg.author.id == bot.user.id or msg.author.bot is True:
+    if msg.author.id == bot.user.id or msg.author.bot:  # type: ignore
         return
+
     # Suggestions
     if msg.channel.id == 970301282646650940:
         if (

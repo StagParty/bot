@@ -3,6 +3,7 @@ from discord.ext import commands
 import datetime
 from bot import OWNERS
 
+
 class Utils(commands.Cog):
     """
     Utility cog for the bot
@@ -26,7 +27,6 @@ class Utils(commands.Cog):
             await update_channel.send(embed=e)
         else:
             await ctx.send("You're not allowed to send an update!")
-
 
     @commands.command()
     async def release(self, ctx):
