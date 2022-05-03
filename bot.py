@@ -66,4 +66,5 @@ async def on_ready():
 if __name__ == "__main__":
     bot.load_extension("cogs.modmail")
     bot.load_extension("cogs.utils")
+    bot.load_extension("cogs.tags")
     bot.run(token)
