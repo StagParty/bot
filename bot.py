@@ -5,6 +5,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 
 OWNERS = [400857098121904149, 702385226407608341]
+DEVELOPERS = [656021685203501066]
 
 load_dotenv()
 token = os.getenv("token")
@@ -12,7 +13,6 @@ token = os.getenv("token")
 bot = commands.Bot(
     command_prefix="!", help_command=None, intents=discord.Intents.all()
 )
-
 
 @bot.event  # Suggestions & Feedback
 async def on_message(msg):
