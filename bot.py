@@ -14,6 +14,7 @@ bot = commands.Bot(
     command_prefix="!", help_command=None, intents=discord.Intents.all()
 )
 
+
 @bot.event  # Suggestions & Feedback
 async def on_message(msg):
     if msg.author.id == bot.user.id or msg.author.bot:  # type: ignore
