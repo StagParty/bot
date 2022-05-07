@@ -30,6 +30,17 @@ class Utils(commands.Cog):
         else:
             await ctx.send("You're not allowed to send an update!")
 
+    @commands.command()
+    async def time(self, ctx, *, responsetime):
+        if ctx.author.id in OWNERS:
+            await ctx.message.delete()
+            activ_type = discord.ActivityType.playing
+            activ_msg = f"{responsetime} response time"
+            activ = discord.Activity(type=activ_type, name=activ_msg)
+            await self.bot.change_presence(activity=activ)
+        else:
+            await ctx.send("You're not allowed to use this command!")
+
 
 def setup(bot):
     bot.add_cog(Utils(bot))
