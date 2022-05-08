@@ -68,4 +68,5 @@ if __name__ == "__main__":
     bot.load_extension("cogs.modmail")
     bot.load_extension("cogs.utils")
     bot.load_extension("cogs.tags")
+    bot.load_extension("cogs.staff")
     bot.run(token)
