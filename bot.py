@@ -3,9 +3,11 @@ import datetime
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
-
+from db import init_engine
 OWNERS = [400857098121904149, 702385226407608341]
 DEVELOPERS = [656021685203501066]
+GUILD_IDS = [970282258890096651]
+THEME = discord.Color.dark_purple()
 
 load_dotenv()
 token = os.getenv("token")
@@ -23,8 +25,8 @@ async def on_message(msg):
     # Suggestions
     if msg.channel.id == 970301282646650940:
         if (
-            msg.author.id != 400857098121904149
-            or msg.author.id != 702385226407608341
+            msg.author.id == 400857098121904149
+            or msg.author.id == 702385226407608341
         ):
             return
         await msg.delete()
@@ -41,8 +43,8 @@ async def on_message(msg):
     # Feedback
     if msg.channel.id == 970282258890096658:
         if (
-            msg.author.id != 400857098121904149
-            or msg.author.id != 702385226407608341
+            msg.author.id == 400857098121904149
+            or msg.author.id == 702385226407608341
         ):
             return
         e = discord.Embed(
@@ -65,6 +67,7 @@ async def on_ready():
 
 
 if __name__ == "__main__":
+    init_engine()
     bot.load_extension("cogs.modmail")
     bot.load_extension("cogs.utils")
     bot.load_extension("cogs.tags")

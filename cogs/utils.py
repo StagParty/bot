@@ -1,8 +1,9 @@
 import discord
 from discord.ext import commands
 import datetime
-from bot import OWNERS
+from bot import OWNERS, THEME
 
+GUILD_IDS = [970282258890096651]
 
 class Utils(commands.Cog):
     """
@@ -20,7 +21,7 @@ class Utils(commands.Cog):
                 title="Update",
                 description=f"{message}",
                 timestamp=datetime.datetime.utcnow(),
-                color=discord.Color.blue(),
+                color=THEME,
             )
             update_embed.set_footer(
                 text=str(ctx.author), icon_url=ctx.author.avatar
