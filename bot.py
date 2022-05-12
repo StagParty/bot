@@ -39,6 +39,7 @@ async def on_message(msg):
         msgsent = await msg.channel.send(embed=e)
         await msgsent.add_reaction("✅")
         await msgsent.add_reaction("❌")
+        await msg.delete()
     # Feedback
     if msg.channel.id == 970282258890096658:
         if (
@@ -56,6 +57,7 @@ async def on_message(msg):
         msgsent = await msg.channel.send(embed=e)
         await msgsent.add_reaction("✅")
         await msgsent.add_reaction("❌")
+        await msg.delete()
     await bot.process_commands(msg)
 
 
