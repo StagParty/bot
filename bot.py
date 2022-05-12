@@ -3,7 +3,6 @@ import datetime
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
-from db import init_engine
 OWNERS = [400857098121904149, 702385226407608341]
 DEVELOPERS = [656021685203501066]
 GUILD_IDS = [970282258890096651]
@@ -57,7 +56,6 @@ async def on_message(msg):
         msgsent = await msg.channel.send(embed=e)
         await msgsent.add_reaction("✅")
         await msgsent.add_reaction("❌")
-
     await bot.process_commands(msg)
 
 
@@ -67,7 +65,6 @@ async def on_ready():
 
 
 if __name__ == "__main__":
-    init_engine()
     bot.load_extension("cogs.modmail")
     bot.load_extension("cogs.utils")
     bot.load_extension("cogs.tags")

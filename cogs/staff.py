@@ -4,8 +4,6 @@ from bot import OWNERS, THEME
 from views import ConfirmView
 
 import asyncio
-import db
-from db import models
 from sqlalchemy.future import select
 from uuid import uuid4
 
