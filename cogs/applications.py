@@ -10,6 +10,7 @@ class Applications(commands.Cog):
     @commands.command()
     async def apply(self, ctx):
         try:
+            await ctx.delete()
             guild = ctx.guild
 
             category = discord.utils.get(guild.categories, id=975357329283362836)
