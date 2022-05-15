@@ -20,6 +20,11 @@ bot = commands.Bot(
 async def on_message(msg):
     if msg.author.id == bot.user.id or msg.author.bot:  # type: ignore
         return
+    cleaned_content = msg.content.replace("\n", " ")
+
+    if len(msg.content) > 1000:
+        await msg.channel.send("You can only send upto 1000 characters at a time!")
+        return
 
     # Suggestions
     if msg.channel.id == 970301282646650940:
@@ -31,7 +36,7 @@ async def on_message(msg):
         await msg.delete()
         e = discord.Embed(
             title="Suggestion",
-            description=f"{msg.content}",
+            description=f"{cleaned_content}",
             timestamp=datetime.datetime.utcnow(),
             color=discord.Color.embed_background(),
         )
@@ -49,7 +54,7 @@ async def on_message(msg):
             return
         e = discord.Embed(
             title="Feedback",
-            description=f"{msg.content}",
+            description=f"{cleaned_content}",
             timestamp=datetime.datetime.utcnow(),
             color=discord.Color.embed_background(),
         )
@@ -71,4 +76,5 @@ if __name__ == "__main__":
     bot.load_extension("cogs.utils")
     bot.load_extension("cogs.tags")
     bot.load_extension("cogs.staff")
+    bot.load_extension("cogs.applications")
     bot.run(token)
