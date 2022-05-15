@@ -36,9 +36,9 @@ class Applications(commands.Cog):
                         "10. If a user is sending nsfw messages, what will you do?",
                         "11. A member in the community begins breaking some minor rules, and you punish them. Them and other well known members begin harassing you and arguing about your decision. What do you do?",
                         "12. A member of the staff team of a higher authority begins to abuse their rank and harass you. How do you react?",
-                        "16. How would you describe your personality?",
-                        "17. Are you fluent in reading and writing English?", 
-                        "18. Anything else you would like to tell about yourself?"]
+                        "13. How would you describe your personality?",
+                        "14. Are you fluent in reading and writing English?", 
+                        "15. Anything else you would like to tell about yourself?"]
             
             answers = []
 
