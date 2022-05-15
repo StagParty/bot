@@ -119,8 +119,9 @@ class Applications(commands.Cog):
             await channel.send("Your application has been submitted! This channel will be deleted in 5 seconds.")
             await asyncio.sleep(5)
             await channel.delete()
-        except:
+        except Exception as e:
             await ctx.send("There was an error while proccessing this application.")
+            print(e)
 
 def setup(bot):
     bot.add_cog(Applications(bot))
