@@ -15,7 +15,6 @@ class Applications(commands.Cog):
                 ctx.guild.default_role: discord.PermissionOverwrite(view_channel = False),
                 ctx.author: discord.PermissionOverwrite(view_channel = True)
             }
-            await ctx.message.delete()
             guild = ctx.guild
 
             category = discord.utils.get(guild.categories, id=975357329283362836)
