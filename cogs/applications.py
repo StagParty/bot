@@ -118,7 +118,7 @@ class Applications(commands.Cog):
             await asyncio.sleep(5)
             await channel.delete()
         except:
-            await ctx.send("There was an error.")
+            await ctx.send("There was an error while proccessing this application.")
 
 def setup(bot):
     bot.add_cog(Applications(bot))
