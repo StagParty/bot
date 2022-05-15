@@ -3,9 +3,10 @@ import datetime
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
-
 OWNERS = [400857098121904149, 702385226407608341]
 DEVELOPERS = [656021685203501066]
+GUILD_IDS = [970282258890096651]
+THEME = discord.Color.dark_purple()
 
 load_dotenv()
 token = os.getenv("token")
@@ -19,18 +20,23 @@ bot = commands.Bot(
 async def on_message(msg):
     if msg.author.id == bot.user.id or msg.author.bot:  # type: ignore
         return
+    cleaned_content = msg.content.replace("\n", " ")
+
+    if len(msg.content) > 1000:
+        await msg.channel.send("You can only send upto 1000 characters at a time!")
+        return
 
     # Suggestions
     if msg.channel.id == 970301282646650940:
         if (
-            msg.author.id != 400857098121904149
-            or msg.author.id != 702385226407608341
+            msg.author.id == 400857098121904149
+            or msg.author.id == 702385226407608341
         ):
             return
         await msg.delete()
         e = discord.Embed(
             title="Suggestion",
-            description=f"{msg.content}",
+            description=f"{cleaned_content}",
             timestamp=datetime.datetime.utcnow(),
             color=discord.Color.embed_background(),
         )
@@ -38,16 +44,17 @@ async def on_message(msg):
         msgsent = await msg.channel.send(embed=e)
         await msgsent.add_reaction("✅")
         await msgsent.add_reaction("❌")
+        await msg.delete()
     # Feedback
     if msg.channel.id == 970282258890096658:
         if (
-            msg.author.id != 400857098121904149
-            or msg.author.id != 702385226407608341
+            msg.author.id == 400857098121904149
+            or msg.author.id == 702385226407608341
         ):
             return
         e = discord.Embed(
             title="Feedback",
-            description=f"{msg.content}",
+            description=f"{cleaned_content}",
             timestamp=datetime.datetime.utcnow(),
             color=discord.Color.embed_background(),
         )
@@ -55,7 +62,7 @@ async def on_message(msg):
         msgsent = await msg.channel.send(embed=e)
         await msgsent.add_reaction("✅")
         await msgsent.add_reaction("❌")
-
+        await msg.delete()
     await bot.process_commands(msg)
 
 
@@ -68,4 +75,6 @@ if __name__ == "__main__":
     bot.load_extension("cogs.modmail")
     bot.load_extension("cogs.utils")
     bot.load_extension("cogs.tags")
+    bot.load_extension("cogs.staff")
+    bot.load_extension("cogs.applications")
     bot.run(token)
