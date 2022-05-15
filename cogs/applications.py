@@ -21,6 +21,8 @@ class Applications(commands.Cog):
             category = discord.utils.get(guild.categories, id=975357329283362836)
             channel = await guild.create_text_channel(f"{ctx.author.name}│{ctx.author.id}", category=category, overwrites=perms)
 
+            await ctx.send(f"Made you a private channel! {channel.mention}")
+
             e = discord.Embed(title="Staff Application", description="This is StagParty's Interactive Staff Application. I will be interviewing you with a series of questions. When answering, please keep your replies in one message only.", color=THEME)
             await channel.send(embed=e)
 
