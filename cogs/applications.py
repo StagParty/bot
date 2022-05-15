@@ -10,11 +10,16 @@ class Applications(commands.Cog):
     @commands.command()
     async def apply(self, ctx):
         try:
-            await ctx.delete()
+
+            perms = {
+                ctx.guild.default_role: discord.PermissionOverwrite(view_channel = False),
+                ctx.author: discord.PermissionOverwrite(view_channel = True)
+            }
+            await ctx.message.delete()
             guild = ctx.guild
 
             category = discord.utils.get(guild.categories, id=975357329283362836)
-            channel = await guild.create_text_channel(f"{ctx.author.name}│{ctx.author.id}", category=category)
+            channel = await guild.create_text_channel(f"{ctx.author.name}│{ctx.author.id}", category=category, overwrites=perms)
 
             e = discord.Embed(title="Staff Application", description="This is StagParty's Interactive Staff Application. I will be interviewing you with a series of questions. When answering, please keep your replies in one message only.", color=THEME)
             await channel.send(embed=e)
@@ -113,7 +118,7 @@ class Applications(commands.Cog):
             await asyncio.sleep(5)
             await channel.delete()
         except:
-            await ctx.respond("I was unable to create a channel for your application!")
+            await ctx.send("I was unable to create a channel for your application!")
 
 def setup(bot):
     bot.add_cog(Applications(bot))
