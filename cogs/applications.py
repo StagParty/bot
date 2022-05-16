@@ -39,11 +39,17 @@ class Applications(commands.Cog):
                     "14. Are you fluent in reading and writing English?", 
                     "15. Anything else you would like to tell about yourself?"]
             
+<<<<<<< HEAD
         answers = []
+=======
+            answers = []
+            prev_answer_msg: discord.Message | None = None
+>>>>>>> 501f39774760d1ad26a1b8fc6eca4bb205e88abd
 
         def check(m):
             return m.author == ctx.author and m.channel == channel
 
+<<<<<<< HEAD
         for i in questions:
             await channel.send(i)
             msg = await channel.send(f"{ctx.author.mention}")
@@ -56,6 +62,21 @@ class Applications(commands.Cog):
                 return
             else:
                 answers.append(msg.content)
+=======
+            for ques in questions:
+                if msg := prev_answer_msg:
+                    await msg.reply(ques)
+                else:
+                    await channel.send(f"{ques} {ctx.author.mention}")
+
+                try:
+                    prev_answer_msg = await self.bot.wait_for('message', timeout=300, check=check)
+                    answers.append(prev_answer_msg.content)
+                except asyncio.TimeoutError:
+                    await channel.send('This application has been inactive for a while, closing.')
+                    await channel.delete()
+                    return
+>>>>>>> 501f39774760d1ad26a1b8fc6eca4bb205e88abd
 
         answerschannel = self.bot.get_channel(975369052790878248)
 
