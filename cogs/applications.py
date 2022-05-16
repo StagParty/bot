@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
-from bot import THEME
+from bot import OWNERS, THEME
 
 class Applications(commands.Cog):
     def __init__(self, bot):
@@ -121,6 +121,18 @@ class Applications(commands.Cog):
         except Exception as e:
             await ctx.send("There was an error while proccessing this application.")
             print(e)
+
+    @commands.command()
+    async def accept(self, ctx, id: int):
+        if ctx.author.id in OWNERS:
+            guild = self.bot.get_guild(970282258890096651)
+            user = guild.get_member(id)
+            print(user)
+
+            e = discord.Embed(title="Application Accepted!", description=f"Your application has been **ACCEPTED**!\n\nWelcome to the staff team! We'll give you a 7-day trial period. ", color=discord.Color.green())
+            await user.send(embed=e)
+
+
 
 def setup(bot):
     bot.add_cog(Applications(bot))
