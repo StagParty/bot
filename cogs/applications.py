@@ -49,7 +49,9 @@ class Applications(commands.Cog):
             if msg := prev_answer_msg:
                 await msg.reply(ques)
             else:
-                await channel.send(f"{ques} {ctx.author.mention}")
+                await channel.send(f"{ques}")
+                msg = await channel.send(f"{ctx.author.mention}")
+                await msg.delete()
 
             try:
                 prev_answer_msg = await self.bot.wait_for('message', timeout=300, check=check)
