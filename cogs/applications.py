@@ -42,22 +42,24 @@ class Applications(commands.Cog):
                         "15. Anything else you would like to tell about yourself?"]
             
             answers = []
+            prev_answer_msg: discord.Message | None = None
 
             def check(m):
                 return m.author == ctx.author and m.channel == channel
 
-            for i in questions:
-                await channel.send(i)
-                msg = await channel.send(f"{ctx.author.mention}")
-                await msg.delete()
+            for ques in questions:
+                if msg := prev_answer_msg:
+                    await msg.reply(ques)
+                else:
+                    await channel.send(f"{ques} {ctx.author.mention}")
+
                 try:
-                    msg = await self.bot.wait_for('message', timeout=1000.0, check=check)
+                    prev_answer_msg = await self.bot.wait_for('message', timeout=300, check=check)
+                    answers.append(prev_answer_msg.content)
                 except asyncio.TimeoutError:
                     await channel.send('This application has been inactive for a while, closing.')
                     await channel.delete()
                     return
-                else:
-                    answers.append(msg.content)
 
             discordname = answers[0]
 
