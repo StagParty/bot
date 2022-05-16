@@ -51,7 +51,7 @@ class Applications(commands.Cog):
                 msg = await channel.send(f"{ctx.author.mention}")
                 await msg.delete()
                 try:
-                    msg = await self.bot.wait_for('message', timeout=60.0, check=check)
+                    msg = await self.bot.wait_for('message', timeout=1000.0, check=check)
                 except asyncio.TimeoutError:
                     await channel.send('This application has been inactive for a while, closing.')
                     await channel.delete()
