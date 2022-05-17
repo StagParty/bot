@@ -21,7 +21,9 @@ class Applications(commands.Cog):
         await ctx.reply(f"An applcation channel for you has been created! {channel.mention}")
 
         e = discord.Embed(title="Staff Application", description="This is StagParty's Interactive Staff Application. I will be interviewing you with a series of questions. When answering, please keep your replies in one message only.", color=THEME)
-        await channel.send(embed=e)
+        firstmsg = await channel.send(embed=e)
+        await firstmsg.pin()
+        await ctx.channel.purge(limit=1)
 
         questions = ["1. What is your name?",
                     "2. Which staff role do you want to apply for?",
@@ -65,6 +67,7 @@ class Applications(commands.Cog):
 
         embed = discord.Embed(
             title=f"New Application", description=f"User information:\nName: {ctx.author.name}\nID: {ctx.author.id}\nJoined: <t:{int(ctx.author.joined_at.timestamp())}>", color=discord.Color.dark_purple())
+        
         for question, answer in zip(questions, answers):
             embed.add_field(name=question, value=answer, inline=False)
         
@@ -85,8 +88,6 @@ class Applications(commands.Cog):
 
             e = discord.Embed(title="Application Accepted!", description=f"Your application has been **ACCEPTED**!\n\nWelcome to the staff team! We'll give you a 7-day trial period. ", color=discord.Color.green())
             await user.send(embed=e)
-
-
 
 def setup(bot):
     bot.add_cog(Applications(bot))
