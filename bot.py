@@ -1,5 +1,7 @@
+import json
 import os
 import datetime
+import time
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -15,6 +17,13 @@ bot = commands.Bot(
     command_prefix="!", help_command=None, intents=discord.Intents.all()
 )
 
+guild = None
+member_role = None
+staff_role = None
+gfx_role = None
+sponsor_role = None
+roles_removed_role = None
+roles_removed_channel = None
 
 @bot.event  # Suggestions & Feedback
 async def on_message(msg):
@@ -65,11 +74,79 @@ async def on_message(msg):
         await msg.delete()
     await bot.process_commands(msg)
 
-
 @bot.event
 async def on_ready():
     print("Online")
+    global guild
+    global member_role
+    global staff_role
+    global gfx_role
+    global sponsor_role
+    global roles_removed_role
+    global roles_removed_channel
+    guild = bot.get_guild(970282258890096651)
+    member_role = guild.get_role(970282638394949653)
+    staff_role = guild.get_role(975351629916307496)
+    gfx_role = guild.get_role(973594405770506351)
+    sponsor_role = guild.get_role(973589989512319046)
+    roles_removed_role = guild.get_role(976145824755101776)
+    roles_removed_channel = bot.get_channel(976145984096714892)
 
+@bot.event
+async def on_presence_update(before, after):
+    if after.bot == True:
+        return
+    if after.id == 702385226407608341 or after.id == 400857098121904149:
+        return
+    for activity in after.activities:
+        if isinstance(activity, discord.CustomActivity):
+            if activity.name.startswith("https://") or "discord.gg/" in activity.name or ".gg/" in activity.name:
+                if "https://stagparty.xyz" in activity.name:
+                    await after.remove_roles(roles_removed_role)
+                    with open("roles.json") as f:
+                        dict = json.load(f)
+                        values = dict[str(after.id)]
+                        for i in range(len(values)):
+                            roleid = values[i]
+                            role = guild.get_role(roleid)
+                            await after.add_roles(role)
+                        values.clear()
+                    with open("roles.json", 'w') as f:
+                        json.dump(dict, f)
+                    return
+                with open("roles.json", 'r') as f:
+                    loader = json.load(f)
+                loader[str(after.id)] = []
+                time.sleep(1)
+                await after.add_roles(roles_removed_role)
+                if member_role in after.roles:
+                    loader[str(after.id)].append(970282638394949653)
+                    await after.remove_roles(member_role)
+                if staff_role in after.roles:
+                    loader[str(after.id)].append(975351629916307496)
+                    await after.remove_roles(staff_role)
+                if gfx_role in after.roles:
+                    loader[str(after.id)].append(973594405770506351)
+                    await after.remove_roles(gfx_role)
+                if sponsor_role in after.roles:
+                    loader[str(after.id)].append(973589989512319046)
+                    await after.remove_roles(sponsor_role)
+                with open("roles.json", 'w') as f:
+                    json.dump(loader, f)
+                msg = await roles_removed_channel.send(str(after.mention))
+                await msg.delete()
+            else:
+                await after.remove_roles(roles_removed_role)
+                with open("roles.json") as f:
+                    dict = json.load(f)
+                    values = dict[str(after.id)]
+                    for i in range(len(values)):
+                        roleid = values[i]
+                        role = guild.get_role(roleid)
+                        await after.add_roles(role)
+                    values.clear()
+                with open("roles.json", 'w') as f:
+                    json.dump(dict, f)
 
 if __name__ == "__main__":
     bot.load_extension("cogs.modmail")
@@ -77,4 +154,5 @@ if __name__ == "__main__":
     bot.load_extension("cogs.tags")
     bot.load_extension("cogs.staff")
     bot.load_extension("cogs.applications")
+    bot.load_extension("cogs.eval")
     bot.run(token)
