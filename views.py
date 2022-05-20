@@ -1,6 +1,7 @@
 import discord
 from discord import ButtonStyle
 
+
 class ConfirmView(discord.ui.View):
     do_action: bool
 

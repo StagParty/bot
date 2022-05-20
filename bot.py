@@ -26,6 +26,7 @@ sponsor_role = None
 roles_removed_role = None
 roles_removed_channel = None
 
+
 @bot.event  # Suggestions & Feedback
 async def on_message(msg):
     if msg.author.id == bot.user.id or msg.author.bot:  # type: ignore
@@ -33,7 +34,9 @@ async def on_message(msg):
     cleaned_content = msg.content.replace("\n", " ")
 
     if len(msg.content) > 1000:
-        await msg.channel.send("You can only send upto 1000 characters at a time!")
+        await msg.channel.send(
+            "You can only send upto 1000 characters at a time!"
+        )
         return
 
     # Suggestions
@@ -75,6 +78,7 @@ async def on_message(msg):
         await msg.delete()
     await bot.process_commands(msg)
 
+
 @bot.event
 async def on_ready():
     print("Online")
@@ -93,6 +97,7 @@ async def on_ready():
     roles_removed_role = guild.get_role(976145824755101776)
     roles_removed_channel = bot.get_channel(976145984096714892)
 
+
 @bot.event
 async def on_presence_update(before, after):
     if after.bot == True:
@@ -101,7 +106,11 @@ async def on_presence_update(before, after):
         return
     for activity in after.activities:
         if isinstance(activity, discord.CustomActivity):
-            if activity.name.startswith("https://") or "discord.gg/" in activity.name or ".gg/" in activity.name:
+            if (
+                activity.name.startswith("https://")
+                or "discord.gg/" in activity.name
+                or ".gg/" in activity.name
+            ):
                 if "https://stagparty.xyz" in activity.name:
                     await after.remove_roles(roles_removed_role)
                     with open("roles.json") as f:
@@ -112,10 +121,10 @@ async def on_presence_update(before, after):
                             role = guild.get_role(roleid)
                             await after.add_roles(role)
                         values.clear()
-                    with open("roles.json", 'w') as f:
+                    with open("roles.json", "w") as f:
                         json.dump(dict, f)
                     return
-                with open("roles.json", 'r') as f:
+                with open("roles.json", "r") as f:
                     loader = json.load(f)
                 loader[str(after.id)] = []
                 time.sleep(1)
@@ -132,7 +141,7 @@ async def on_presence_update(before, after):
                 if sponsor_role in after.roles:
                     loader[str(after.id)].append(973589989512319046)
                     await after.remove_roles(sponsor_role)
-                with open("roles.json", 'w') as f:
+                with open("roles.json", "w") as f:
                     json.dump(loader, f)
                 msg = await roles_removed_channel.send(str(after.mention))
                 await msg.delete()
@@ -146,8 +155,9 @@ async def on_presence_update(before, after):
                         role = guild.get_role(roleid)
                         await after.add_roles(role)
                     values.clear()
-                with open("roles.json", 'w') as f:
+                with open("roles.json", "w") as f:
                     json.dump(dict, f)
+
 
 if __name__ == "__main__":
     for filename in os.listdir('./cogs'):

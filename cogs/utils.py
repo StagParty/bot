@@ -5,6 +5,7 @@ from bot import OWNERS, THEME
 
 GUILD_IDS = [970282258890096651]
 
+
 class Utils(commands.Cog):
     """
     Utility cog for the bot
