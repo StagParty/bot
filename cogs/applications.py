@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
-from bot import OWNERS, THEME
+from bot import OWNERS, THEME, MANAGEMENT
 
 class Applications(commands.Cog):
     def __init__(self, bot):
@@ -81,7 +81,7 @@ class Applications(commands.Cog):
 
     @commands.command()
     async def accept(self, ctx, id: int):
-        if ctx.author.id in OWNERS:
+        if ctx.author.id in OWNERS or ctx.author.id in MANAGEMENT:
             guild = self.bot.get_guild(970282258890096651)
             user = guild.get_member(id)
             print(user)

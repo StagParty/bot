@@ -20,7 +20,7 @@ class Tags(commands.Cog):
         await ctx.send(embed=tag_embed)
 
     @commands.command()
-    async def help(self, ctx):
+    async def needhelp(self, ctx):
         await ctx.message.delete()
         tag_embed = discord.Embed(
             title="Need Help?",

@@ -5,11 +5,12 @@ import time
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
+
 OWNERS = [400857098121904149, 702385226407608341]
 DEVELOPERS = [656021685203501066]
 GUILD_IDS = [970282258890096651]
+MANAGEMENT = [410852168414003200]
 THEME = discord.Color.dark_purple()
-
 load_dotenv()
 token = os.getenv("token")
 
@@ -149,10 +150,7 @@ async def on_presence_update(before, after):
                     json.dump(dict, f)
 
 if __name__ == "__main__":
-    bot.load_extension("cogs.modmail")
-    bot.load_extension("cogs.utils")
-    bot.load_extension("cogs.tags")
-    bot.load_extension("cogs.staff")
-    bot.load_extension("cogs.applications")
-    bot.load_extension("cogs.eval")
+    for filename in os.listdir('./cogs'):
+        if filename.endswith(".py"):
+            bot.load_extension(f'cogs.{filename[:-3]}')
     bot.run(token)
